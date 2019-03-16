@@ -14,24 +14,44 @@ source("shinyThemeUtils.R")
 # Shiny Dashboard code.
 shinydashboard::dashboardPage(title = "ReBiAcApp",
   shinydashboard::dashboardHeader(
-    title = logo_ReBiAcApp
+    title = logo_ReBiAcApp,
+    tags$li(class = "dropdown", actionButton("home", "Home", class="button button1"),
+            actionButton("login", "Login", class="button button1")),
+    tags$li(class = "dropdown",uiOutput("logout")),
+    tags$li(a(href = 'https://github.com/AshutoshAgrahari/ReBiAcApp',
+              img(src = 'img/Agrahari Consulting Logo2.png',title = "Company Home", height = "30px"),
+              style = "padding-top:10px; padding-bottom:5px;"
+              ),
+            class = "dropdown")
     ),
   shinydashboard::dashboardSidebar(
-    sidebarMenu(id = "tabs",menuItem("User Management", tabName = "ML_WB", icon = icon("upload")))
+    sidebarMenu(id = "tabs",
+                menuItem("Home", tabName = "home", icon = icon("fas fa-home")),
+                menuItem("Administration", tabName = "admin", icon = icon("fas fa-home")),
+                menuItem("Invoicing", tabName = "invoice", icon = icon("fas fa-home")),
+                menuItem("Stocking", tabName = "purchase", icon = icon("fas fa-home")),
+                menuItem("Staff Management", tabName = "staffing", icon = icon("fas fa-home")),
+                menuItem("Accounting", tabName = "account", icon = icon("fas fa-home")),
+                menuItem("Expenses", tabName = "expenses", icon = icon("upload")),
+                menuItem("Taxation", tabName = "taxation", icon = icon("upload")),
+                menuItem("Manual", tabName = "manual", icon = icon("upload")),
+                menuItem("Help", tabName = "help", icon = icon("upload"))
+                )
     ),
   shinydashboard::dashboardBody(
     theme_ReBiAcApp,
     useShinyalert(),
     useShinyjs(),
+    tags$head(
+      tags$link(rel = "stylesheet", type = "text/css", href = "css/style.css")
+    ),
     #extendShinyjs(text = jscode),
-    
-    
     tabItems(
-      tabItem(tabName = "ML_WB",
-              HTML('<p><strong><h1> Retail Billing Accounting Application [Retailfy]</h1></p>
-                   <p>Developed By: Ashutosh Agrahari </p>'
-                   )
-              )
+      tabItem(tabName = "home",
+              HTML('<p><strong><h1 style = "text-align: center"> Retail Billing Accounting Application [Retailfy]</h1></p>'),
+              p(img(src="img/Agrahari Consulting(2).png", align ="middle", width = "500",hight = "500"), style = "text-align: center"),
+              HTML('<p align= "right">Developed By: Ashutosh Agrahari </p>')
+            )
     ),
     #### Footer ####
     tags$footer(HTML("<strong>Copyright &copy; 2019 All rights reserved. <b>ReBiAcApp V1.0 Beta</b>"), 

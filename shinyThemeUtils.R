@@ -61,7 +61,7 @@ theme_ReBiAcApp <- shinyDashboardThemeDIY(
   ,sidebarSearchBorderColor = "rgb(55,72,80)"
   
   ,sidebarTabTextColor = "rgb(255,255,255)"
-  ,sidebarTabTextSize = 13
+  ,sidebarTabTextSize = 16
   ,sidebarTabBorderStyle = "none none solid none"
   ,sidebarTabBorderColor = "rgb(35,106,135)"
   ,sidebarTabBorderWidth = 1
