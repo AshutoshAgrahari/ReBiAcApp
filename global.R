@@ -10,6 +10,4 @@ options(shiny.maxRequestSize = 50*1024^2, # setting maximum upload size to 50MB 
 Sys.setenv("R_ZIPCMD" = "C:/Rtools/bin/zip.exe")
 
 ############ loading required libraries  #############
-library(shiny)            # used to shiny APP
-library(shinydashboard)
 
