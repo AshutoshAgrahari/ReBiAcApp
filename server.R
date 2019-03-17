@@ -11,7 +11,7 @@ function(input, output, session){
     }
   })
   
-  # kfnLoginModal returns UI as Modaldialog popup for user login
+  # fnLoginModal returns UI as Modaldialog popup for user login
   fnLoginModal <- function(failed = FALSE) {
     modalDialog(title = tags$b("User Login"),size = "m",easyClose = T,fade = T,
                 wellPanel(
@@ -60,6 +60,16 @@ function(input, output, session){
     }else{
       customAlert(message = "unable to connect with Login server. Please connect with helpdesk.", alertType = "error")
     }
+  })
+  
+  # updating tab panel to home screen, when user click on home.
+  observeEvent(input$home,{
+    updateTabItems(session, inputId = "sidebarTabs",selected = "home")
+  })
+  
+  
+  output$adminUI <- renderUI({
+    
   })
   
 }

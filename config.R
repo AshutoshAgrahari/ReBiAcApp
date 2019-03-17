@@ -1,5 +1,7 @@
 list.of.packages <- c(
-  "shiny","shinydashboard","devtools","shinyjs","shinyBS","shinyalert","V8","data.table","dplyr","tidyverse","readxl","openxlsx"
+  "shiny","shinydashboard","devtools","shinyjs","shinyBS","shinyalert","V8","data.table",
+  #"dplyr","tidyverse",
+  "readxl","openxlsx"
 )
 
 
@@ -9,3 +11,4 @@ if(length(new.packages))
 
 library(devtools)
 install_github("nik01010/dashboardthemes")
+

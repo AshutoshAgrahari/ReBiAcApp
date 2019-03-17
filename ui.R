@@ -27,38 +27,50 @@ shinydashboard::dashboardPage(title = "ReBiAcApp",
             class = "dropdown")
     ),
   shinydashboard::dashboardSidebar(
-    sidebarMenu(id = "tabs",
-                menuItem("Home", tabName = "home", icon = icon("fas fa-home")),
-                menuItem("Administration", tabName = "admin", icon = icon("fas fa-cogs")),
-                menuItem("Invoicing", tabName = "invoice", icon = icon("fas fa-cart-plus")),
-                menuItem("Stocking", tabName = "purchase", icon = icon("fas fa-coins")),
-                menuItem("Staff Management", tabName = "staffing", icon = icon("fas fa-users")),
-                menuItem("Accounting", tabName = "account", icon = icon("fas fa-briefcase")),
-                menuItem("Expenses", tabName = "expenses", icon = icon("fas fa-rupee-sign")),
-                menuItem("Taxation", tabName = "taxation", icon = icon("fas fa-clipboard-list")),
-                menuItem("Analytics", tabName = "analytics", icon = icon("fas fa-chart-line")),
-                menuItem("Banking", tabName = "banking", icon = icon("fas fa-piggy-bank")),
-                menuItem("Manual", tabName = "manual", icon = icon("fas fa-book-open")),
-                menuItem("Help", tabName = "help", icon = icon("fal fa-question-circle"))
+    sidebarMenu(id = "sidebarTabs",
+                menuItem(text = "Home", tabName = "home", icon = icon("fas fa-home")),
+                menuItem(text = "Administration", tabName = "admin", icon = icon("fas fa-cogs")),
+                menuItem(text = "Invoicing", tabName = "invoice", icon = icon("fas fa-cart-plus")),
+                menuItem(text = "Stocking", tabName = "purchase", icon = icon("fas fa-coins")),
+                menuItem(text = "Staff Management", tabName = "staffing", icon = icon("fas fa-users")),
+                menuItem(text = "Accounting", tabName = "account", icon = icon("fas fa-briefcase")),
+                menuItem(text = "Expenses", tabName = "expenses", icon = icon("fas fa-rupee-sign")),
+                menuItem(text = "Taxation", tabName = "taxation", icon = icon("fas fa-clipboard-list")),
+                menuItem(text = "Analytics", tabName = "analytics", icon = icon("fas fa-chart-line")),
+                menuItem(text = "Banking", tabName = "banking", icon = icon("fas fa-piggy-bank")),
+                menuItem(text = "Manual", tabName = "manual", icon = icon("fas fa-book-open")),
+                menuItem(text = "Help", tabName = "help", icon = icon("fal fa-question-circle"))
                 )
     ),
   shinydashboard::dashboardBody(
     theme_ReBiAcApp,
     useShinyalert(),
     useShinyjs(),
-    tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "css/style.css")
-    ),
+    tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "css/style.css")),
     extendShinyjs(text = jscode),
-    tabItems(
-      tabItem(tabName = "home",
-              HTML('<p><strong><h1 style = "text-align: center"> Retail Billing Accounting Application [Retailfy]</h1></p>'),
-              p(img(src="img/Agrahari Consulting(2).png", align ="middle", width = "500",hight = "500"), style = "text-align: center"),
-              HTML('<p align= "right">Developed By: Ashutosh Agrahari </p>')
-            )
+    shinydashboard::tabItems(
+      #### Home page #####
+      shinydashboard::tabItem(tabName = "home",
+                tags$b(tags$h1("Retailfy Application: Retail Billing Accounting Application", style = "text-align: center;")),
+                p(img(src="img/Agrahari Consulting(2).png", align ="middle", width = "500",hight = "500"), style = "text-align: center"),
+                tags$p("Developed By: Ashutosh Agrahari", style = "text-align: right;")
+      ),
+      
+      #### Administration page #####
+      shinydashboard::tabItem(tabName = "admin",uiOutput("adminUI")),
+      shinydashboard::tabItem(tabName = "invoice",uiOutput("invoiceUI")),
+      shinydashboard::tabItem(tabName = "purchase",uiOutput("purchaseUI")),
+      shinydashboard::tabItem(tabName = "staffing",uiOutput("staffingUI")),
+      shinydashboard::tabItem(tabName = "account",uiOutput("accountUI")),
+      shinydashboard::tabItem(tabName = "expense",uiOutput("expenseUI")),
+      shinydashboard::tabItem(tabName = "taxation",uiOutput("taxationUI")),
+      shinydashboard::tabItem(tabName = "analytics",uiOutput("analyticsUI")),
+      shinydashboard::tabItem(tabName = "banking",uiOutput("bankingUI")),
+      shinydashboard::tabItem(tabName = "manual",uiOutput("manualUI")),
+      shinydashboard::tabItem(tabName = "help",tags$h4(tags$b("For Help, Please contact at akagr.cse@gmail.com")))
     ),
     #### Footer ####
-    tags$footer(HTML("<strong>Copyright &copy; 2019 All rights reserved. <b>ReBiAcApp V1.0 Beta</b>"), 
+    tags$footer(HTML("<strong>Copyright &copy; 2019 All rights reserved. <b>ReBiAcApp V1.0 Beta | Developed By: Ashutosh Agrahari </b>"), 
                 align = "center", 
                 style = "position:absolute;
                 bottom:0;
