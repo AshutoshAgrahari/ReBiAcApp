@@ -1,17 +1,25 @@
 function(input, output, session){
+  
   observeEvent(input$login,{
-    showModal(fnLoginModal())
+    if(varValues$authenticated == FALSE){  # If Condition for login
+      showModal(fnLoginModal())
+    }else{  # If Condition for logout
+      varValues$authenticated <- FALSE
+      updateActionButton(session = session,inputId = "login",label = "Login")
+      session$reload()
+      js$refresh()
+    }
   })
   
   # kfnLoginModal returns UI as Modaldialog popup for user login
   fnLoginModal <- function(failed = FALSE) {
     modalDialog(title = tags$b("User Login"),size = "m",easyClose = T,fade = T,
                 wellPanel(
-                  textInput("usernameInput", "Username:",placeholder = "Provide username",width = "100%"),
-                  passwordInput("passwordInput", "Password:",placeholder = "Provide password",width = "100%")
+                  textInput("usernameInput", tags$b("Username:"),placeholder = "Provide username",width = "100%"),
+                  passwordInput("passwordInput", tags$b("Password:"),placeholder = "Provide password",width = "100%")
                 ),
-                actionButton("actLogin", "Login",class = "button button1"),
-                footer = NULL, class = "modal-header modal-title modal-content modal-body"
+                actionButton("bntLogin", "Login",class = "button button1"),
+                footer = NULL#, class = "modal-header modal-title modal-content modal-body"
     )
   }
   
@@ -19,54 +27,38 @@ function(input, output, session){
   varValues <- reactiveValues(authenticated = FALSE)
   
   # validate user login detail
-  observe({
-    req(input$kacLogin)
+  observeEvent(input$bntLogin,{
     isolate({
-      Username <- input$kinUsername
-      Password <- input$kinPassword
+      Username <- input$usernameInput
+      Password <- input$passwordInput
     })
     
-    Id.username <- which(KARMALoginRegister$username == Username)
-    Id.password <- which(KARMALoginRegister$password == Password)
-    if (length(Id.username) > 0 & length(Id.password) > 0) {
-      if (Id.username == Id.password) {
-        Logged <<- TRUE
-        kvarvalues$authenticated <- TRUE
-        removeModal()
-        karmaMasterList[["UserName"]] <<- input$kinUsername
-        meCustomAlert("Welcome to KARMA", alertType = "success")
-        
-        userProjectDir <<- paste0(KARMA_MLWB_APPData,"/",Username)
-        # create user dir in AppData if it is not exist to save model.
-        if(!dir.exists(userProjectDir)){
-          dir.create(userProjectDir)
-        }
-        
-        ## Projects Registry of User
-        # List of save projects by logged user, KARMAProjectModelRegister: It is a registry of Analyst-project-model.
-        UserProjectRegistry <- paste0(userProjectDir,"/KARMAProjectModelRegister.RData")
-        if(file.exists(UserProjectRegistry)){
-          load(UserProjectRegistry,envir = .GlobalEnv)
-        }else{
-          KARMAProjectModelRegister <<- data.frame(matrix(ncol = 6, nrow = 0))
-          names(KARMAProjectModelRegister) <<- c("Index","UserName","ProjectRunID","ProjectName","CreationDate","CurrentStatus")
-        }
-        
-        ## output panel to display logged user in sidebar menu
-        output$logoutUI <- renderUI({
-          tagList(
-            actionButton("HomeButton",label = tags$b("Home"),style="color: #FFCC00; background-color: #000000;margin: 8px"),
-            actionButton("SaveButton",label = tags$b("Save Project"),style="color: #FFCC00; background-color: #000000; margin: 8px"),
-            actionButton("Logout", label = tags$b("Logout"),style="color: #FFCC00; background-color: #000000; margin: 8px")
-          )
-        })
-        
-      } else {
-        kvarvalues$authenticated <- FALSE
-        meCustomAlert(message = "Wrong username or password, please try again.",alertType = "error")
-      }     
-    }else {
-      meCustomAlert(message = "Wrong username or password, please try again.",alertType = "error")
+    if(file.exists(userLoginTablePath)){
+      userLoginTable <- readxl::read_xlsx(path = userLoginTablePath)
+      Id.username <- which(userLoginTable$Username == Username)
+      Id.password <- which(userLoginTable$Password == Password)
+      if (length(Id.username) > 0 & length(Id.password) > 0){
+        if (Id.username == Id.password) {
+          varValues$authenticated <- TRUE
+          removeModal()
+          customAlert("Welcome to Retailify App.", alertType = "success")
+          updateActionButton(session = session,inputId = "login",label = "Logout")
+          
+          output$loggedDetail <- renderText({
+            invalidateLater(1000, session)
+            paste0("Logged User: ",Username," | ",Sys.time(),"|")
+          })
+          
+        } else {
+          varValues$authenticated <- FALSE
+          customAlert(message = "Wrong username or password, please try again!",alertType = "error")
+        }     
+      }else {
+        varValues$authenticated <- FALSE
+        customAlert(message = "Wrong username or password, please try again!",alertType = "error")
+      }
+    }else{
+      customAlert(message = "unable to connect with Login server. Please connect with helpdesk.", alertType = "error")
     }
   })
   

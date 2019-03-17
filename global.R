@@ -1,4 +1,4 @@
-############# clearing env before launching APP  #############
+##### clearing env before launching APP  #############
 rm(list = ls())
 
 ##### Setting the shiny options #####
@@ -9,8 +9,15 @@ options(shiny.maxRequestSize = 50*1024^2, # setting maximum upload size to 50MB 
 ##### Setting the Rtool path #####
 Sys.setenv("R_ZIPCMD" = "C:/Rtools/bin/zip.exe")
 
-############ loading required libraries  #############
+##### loading required libraries  #############
+library(readxl)
 
 
-username = "agrahari"
-password = "agrahari"
+############ Java script for refersh the browser after logout #############
+jscode <- "shinyjs.refresh = function() { history.go(0); }"
+
+
+##### Dataset Paths ################
+userLoginTablePath <- paste0(getwd(),"/Dataset/RetailifyUserLoginAceessTable.xlsx")
+
+

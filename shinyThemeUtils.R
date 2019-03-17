@@ -136,3 +136,17 @@ theme_ReBiAcApp <- shinyDashboardThemeDIY(
   ,tableBorderRowSize = 1
   
 )
+
+
+
+############ custom alert  #####################
+# customAlert: function for custom alert message to user with alert type as error, success and warning.
+customAlert <- function(message, alertType){
+  if(alertType=="error"){
+    shinyalert(title = "",text = message,type = alertType,closeOnEsc = T,closeOnClickOutside = T,showConfirmButton = T,cancelButtonText = "Cancel",confirmButtonCol = "#AEDEF4",animation = T,imageUrl = "")
+  }else if(alertType=="success"){
+    shinyalert(title = "",text = message,type = alertType,closeOnEsc = T,closeOnClickOutside = T,showConfirmButton = T,cancelButtonText = "Cancel",confirmButtonCol = "#AEDEF4",animation = T,imageUrl = "")
+  }else if(alertType=="warning"){
+    shinyalert(title = "",text = message,type = alertType,closeOnEsc = T,closeOnClickOutside = T,showConfirmButton = T,cancelButtonText = "Cancel",confirmButtonCol = "#AEDEF4",animation = T,imageUrl = "")
+  }
+}
