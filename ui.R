@@ -18,7 +18,9 @@ shinydashboard::dashboardPage(title = "ReBiAcApp",
     tags$li(class = "dropdown",tags$h4(textOutput("loggedDetail")),style = "padding-top:10px; padding-bottom:1px;"),
     tags$li(class = "dropdown", 
             actionButton("home", "Home", class="button button1"),
-            actionButton("login", "Login", class="button button1")
+            actionButton("login", "Login", class="button button1"),
+            bsTooltip("home", "Click to Home Screen","left", options = list(container = "header")),
+            bsTooltip("login", "Click to Login box","right", options = list(container = "header"))
     ),
     tags$li(a(href = 'https://github.com/AshutoshAgrahari/ReBiAcApp',
               img(src = 'img/Agrahari Consulting Logo2.png',title = "Company Home", height = "30px"),

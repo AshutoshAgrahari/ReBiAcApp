@@ -11,6 +11,7 @@ Sys.setenv("R_ZIPCMD" = "C:/Rtools/bin/zip.exe")
 
 ##### loading required libraries  #############
 library(readxl)
+library(rhandsontable)
 
 
 ############ Java script for refersh the browser after logout #############

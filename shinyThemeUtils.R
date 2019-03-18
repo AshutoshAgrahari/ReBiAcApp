@@ -1,4 +1,4 @@
-### creating custom logo object
+#### creating custom logo object ####
 logo_ReBiAcApp <- shinyDashboardLogoDIY(
   boldText = "Retailify"
   ,mainText = "App"
@@ -11,6 +11,7 @@ logo_ReBiAcApp <- shinyDashboardLogoDIY(
   
 )
 
+#### creating custom theme object ####
 theme_ReBiAcApp <- shinyDashboardThemeDIY(
   
   ### general
@@ -139,7 +140,7 @@ theme_ReBiAcApp <- shinyDashboardThemeDIY(
 
 
 
-############ custom alert  #####################
+#### custom alert  #####
 # customAlert: function for custom alert message to user with alert type as error, success and warning.
 customAlert <- function(message, alertType){
   if(alertType=="error"){
@@ -149,4 +150,31 @@ customAlert <- function(message, alertType){
   }else if(alertType=="warning"){
     shinyalert(title = "",text = message,type = alertType,closeOnEsc = T,closeOnClickOutside = T,showConfirmButton = T,cancelButtonText = "Cancel",confirmButtonCol = "#AEDEF4",animation = T,imageUrl = "")
   }
+}
+
+
+
+AGBox <- function (..., title = NULL, footer = NULL,background = NULL, width = 6, height = NULL){
+  AGBoxClass <- "panel panel-default"
+  
+  if (!is.null(background)) {
+    AGBoxClass <- paste0(AGBoxClass, " bg-", background)
+  }
+  style <- NULL
+  if (!is.null(height)) {
+    style <- paste0("height: ", validateCssUnit(height))
+  }
+  titleTag <- NULL
+  if (!is.null(title)) {
+    titleTag <- h4(title)
+  }
+  
+  headerTag <- NULL
+  if (!is.null(titleTag)) {
+    headerTag <- div(class = "panel-heading", titleTag)
+  }
+  div(class = if (!is.null(width))
+    paste0("col-sm-", width), div(class = AGBoxClass, style = if (!is.null(style))
+      style, headerTag, div(class = "panel-body", ...), if (!is.null(footer))
+        div(class = "panel-footer", footer)))
 }

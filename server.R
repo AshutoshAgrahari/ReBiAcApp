@@ -1,10 +1,18 @@
 function(input, output, session){
   
+  #### Global Variables ####
+  RecValues <- reactiveValues(
+    authenticated = FALSE, # When Login button is clicked, attempt to authenticate user. If successful remove the login modal. 
+    userLoginTable = NULL  # User Login and access table for display for admin.
+    )
+  
+  #### Login Feature ####
+  # Login Model Dialogue Box
   observeEvent(input$login,{
-    if(varValues$authenticated == FALSE){  # If Condition for login
+    if(RecValues$authenticated == FALSE){  # If Condition for login
       showModal(fnLoginModal())
     }else{  # If Condition for logout
-      varValues$authenticated <- FALSE
+      RecValues$authenticated <- FALSE
       updateActionButton(session = session,inputId = "login",label = "Login")
       session$reload()
       js$refresh()
@@ -19,12 +27,10 @@ function(input, output, session){
                   passwordInput("passwordInput", tags$b("Password:"),placeholder = "Provide password",width = "100%")
                 ),
                 actionButton("bntLogin", "Login",class = "button button1"),
+                bsTooltip("bntLogin", "Click for Login","right", options = list(container = "body")),
                 footer = NULL#, class = "modal-header modal-title modal-content modal-body"
     )
   }
-  
-  # When Login button is clicked, attempt to authenticate user. If successful remove the login modal. 
-  varValues <- reactiveValues(authenticated = FALSE)
   
   # validate user login detail
   observeEvent(input$bntLogin,{
@@ -34,12 +40,13 @@ function(input, output, session){
     })
     
     if(file.exists(userLoginTablePath)){
-      userLoginTable <- readxl::read_xlsx(path = userLoginTablePath)
-      Id.username <- which(userLoginTable$Username == Username)
-      Id.password <- which(userLoginTable$Password == Password)
+      RecValues$userLoginTable <- readxl::read_xlsx(path = userLoginTablePath)
+      RecValues$userLoginTable$UserID <- as.integer(RecValues$userLoginTable$UserID)
+      Id.username <- which(RecValues$userLoginTable$Username == Username)
+      Id.password <- which(RecValues$userLoginTable$Password == Password)
       if (length(Id.username) > 0 & length(Id.password) > 0){
         if (Id.username == Id.password) {
-          varValues$authenticated <- TRUE
+          RecValues$authenticated <- TRUE
           removeModal()
           customAlert("Welcome to Retailify App.", alertType = "success")
           updateActionButton(session = session,inputId = "login",label = "Logout")
@@ -50,11 +57,11 @@ function(input, output, session){
           })
           
         } else {
-          varValues$authenticated <- FALSE
+          RecValues$authenticated <- FALSE
           customAlert(message = "Wrong username or password, please try again!",alertType = "error")
         }     
       }else {
-        varValues$authenticated <- FALSE
+        RecValues$authenticated <- FALSE
         customAlert(message = "Wrong username or password, please try again!",alertType = "error")
       }
     }else{
@@ -67,9 +74,51 @@ function(input, output, session){
     updateTabItems(session, inputId = "sidebarTabs",selected = "home")
   })
   
-  
+  #### Admin Module #####
+  # Display Admin Screen UI
   output$adminUI <- renderUI({
-    
+    tagList(
+      AGBox(title="New User Registration:", width=12,
+            splitLayout(
+              textInput("newUserEmailID","Email ID:",value = "demo@test.com"),
+              textInput("newUserName","UserName:",value = "test"),
+              textInput("newUserPassword","Password:",value = "test@123")
+            ),
+            actionButton("createNewUserLogin", "Create New User", class="button button1"),
+            bsTooltip("createNewUserLogin", "Click to create new user account, access can be update in user access table.","right", options = list(container = "body"))
+      ),
+      AGBox(title="User Login Access Grid", width=12,
+            rhandsontable::rHandsontableOutput('userLoginTable',width = "100%"),br(),
+            actionButton("updateUserAccessTable", "Update", class="button button1"),
+            bsTooltip("updateUserAccessTable", "Click to update the User detail and Access.","right", options = list(container = "body"))
+      )
+    )
+  })
+  
+  # Display User Login and Access table.
+  output$userLoginTable <- rhandsontable::renderRHandsontable({
+    rhandsontable::rhandsontable(RecValues$userLoginTable, #MasterList[["userLoginTable"]],
+                                 useTypes = TRUE, stretchH = "all",rowHeaders = NULL,fillHandle = FALSE) %>%
+      hot_table(highlightCol = TRUE, highlightRow = TRUE) %>%
+      hot_col(c("UserID"), readOnly = TRUE)%>%
+      hot_cols(fixedColumnsLeft = 4) %>%
+      hot_context_menu(allowRowEdit = FALSE, allowColEdit = FALSE)
+  })
+  
+  # Updating the table
+  observeEvent(input$updateUserAccessTable,{
+    userLoginTable <- hot_to_r(input$userLoginTable)
+    RecValues$userLoginTable <- userLoginTable[userLoginTable$RemoveFlag == FALSE,]
+    openxlsx::write.xlsx(RecValues$userLoginTable,userLoginTablePath)
+  })
+  
+  # Creating new user
+  observeEvent(input$createNewUserLogin,{
+    userLoginTable <- RecValues$userLoginTable
+    tmpUserDetail <- data.frame(max(userLoginTable$UserID)+1,input$newUserName,input$newUserPassword,input$newUserEmailID, matrix(rep(TRUE, length(userLoginTable)-5),nrow = 1), FALSE)
+    names(tmpUserDetail) <- names(userLoginTable)
+    RecValues$userLoginTable <- rbind(userLoginTable,tmpUserDetail)
+    openxlsx::write.xlsx(RecValues$userLoginTable,userLoginTablePath)
   })
   
 }

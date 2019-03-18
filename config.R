@@ -1,7 +1,6 @@
 list.of.packages <- c(
   "shiny","shinydashboard","devtools","shinyjs","shinyBS","shinyalert","V8","data.table",
-  #"dplyr","tidyverse",
-  "readxl","openxlsx"
+  "dplyr","tidyverse","readxl","openxlsx","rhandsontable"
 )
 
 
