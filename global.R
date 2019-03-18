@@ -1,3 +1,6 @@
+##### Config file sourced to update the libraries ####### 
+source("config.R")
+
 ##### clearing env before launching APP  #############
 rm(list = ls())
 
@@ -14,7 +17,7 @@ library(readxl)
 library(rhandsontable)
 
 
-############ Java script for refersh the browser after logout #############
+##### Java script for refersh the browser after logout #############
 jscode <- "shinyjs.refresh = function() { history.go(0); }"
 
 

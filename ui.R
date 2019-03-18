@@ -71,6 +71,7 @@ shinydashboard::dashboardPage(title = "ReBiAcApp",
       shinydashboard::tabItem(tabName = "manual",uiOutput("manualUI")),
       shinydashboard::tabItem(tabName = "help",tags$h4(tags$b("For Help, Please contact at akagr.cse@gmail.com")))
     ),
+    
     #### Footer ####
     tags$footer(HTML("<strong>Copyright &copy; 2019 All rights reserved. <b>ReBiAcApp V1.0 Beta | Developed By: Ashutosh Agrahari </b>"), 
                 align = "center", 
