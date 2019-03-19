@@ -58,22 +58,53 @@ shinydashboard::dashboardPage(title = "ReBiAcApp",
                 tags$p("Developed By: Ashutosh Agrahari", style = "text-align: right;")
       ),
       
-      #### Administration page #####
+      #### Administration Screen #####
       shinydashboard::tabItem(tabName = "admin",uiOutput("adminUI")),
+      
+      #### Invoicing Screen #####
       shinydashboard::tabItem(tabName = "invoice",uiOutput("invoiceUI")),
+      
+      #### Purchase Screen #####
       shinydashboard::tabItem(tabName = "purchase",uiOutput("purchaseUI")),
+      
+      #### Staffing Screen #####
       shinydashboard::tabItem(tabName = "staffing",uiOutput("staffingUI")),
+      
+      #### Account Screen #####
       shinydashboard::tabItem(tabName = "account",uiOutput("accountUI")),
+      
+      #### Expense Screen #####
       shinydashboard::tabItem(tabName = "expense",uiOutput("expenseUI")),
+      
+      #### Taxation Screen #####
       shinydashboard::tabItem(tabName = "taxation",uiOutput("taxationUI")),
+      
+      #### Analytics Screen #####
       shinydashboard::tabItem(tabName = "analytics",uiOutput("analyticsUI")),
+      
+      #### Banking Screen #####
       shinydashboard::tabItem(tabName = "banking",uiOutput("bankingUI")),
-      shinydashboard::tabItem(tabName = "manual",uiOutput("manualUI")),
-      shinydashboard::tabItem(tabName = "help",tags$h4(tags$b("For Help, Please contact at akagr.cse@gmail.com")))
+      
+      #### Manual Screen #####
+      shinydashboard::tabItem(tabName = "manual",
+                              tags$h3(tags$b("We will provide the Manual soon..."),style = "text-align: center;")
+                              ),
+      
+      #### Help Screen #####
+      shinydashboard::tabItem(tabName = "help",br(),br(),br(),br(),
+                              tags$h3(tags$b("For Help, Please contact..."),style = "text-align: center;"),
+                              tags$h4(tags$b("Ashutosh Agrahari"),style = "text-align: center;"),
+                              tags$h4(icon("fal fa-envelope"), tags$a("akagr.cse@gmail.com"),style = "text-align: center;"),
+                              tags$h3(tags$ul(
+                                  a(href = 'https://github.com/AshutoshAgrahari/',icon("fal fa-github")),
+                                  a(href = 'https://www.linkedin.com/in/ashutosh-agrahari-55242116/',icon("fal fa-linkedin")),
+                                  class = "dropdown", style = "text-align: center;"))
+                              )
     ),
     
     #### Footer ####
-    tags$footer(HTML("<strong>Copyright &copy; 2019 All rights reserved. <b>ReBiAcApp V1.0 Beta | Developed By: Ashutosh Agrahari </b>"), 
+    tags$footer(HTML("<strong>Copyright &copy;", lubridate::year(Sys.Date()), 
+                     "All rights reserved. <b>ReBiAcApp V1.0 Beta | Developed By: Ashutosh Agrahari </b>"), 
                 align = "center", 
                 style = "position:absolute;
                 bottom:0;
@@ -87,3 +118,6 @@ shinydashboard::dashboardPage(title = "ReBiAcApp",
   #### End ####
   
 )
+
+
+
