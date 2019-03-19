@@ -1,5 +1,5 @@
 
-### List of Libraries which needs to install from CRAN repository.
+## List of Libraries which needs to install from CRAN repository.
 list.of.packages <- c(
   "shiny","shinydashboard","devtools","shinyjs","shinyBS","shinyalert","V8","data.table",
   "dplyr","tidyverse","readxl","openxlsx","rhandsontable","rsconnect"
@@ -7,7 +7,9 @@ list.of.packages <- c(
 
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages))
-  install.packages(new.packages, repos='http://cran.us.r-project.org',dependencies = F)
+  install.packages(new.packages, repos='http://cran.us.r-project.org',dependencies = T)
+
+## Comment above code before deployment
 
 
 ### List of libraries which needs to install from GIT repository.

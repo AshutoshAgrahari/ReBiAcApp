@@ -1,5 +1,9 @@
 ##### Config file sourced to update the libraries ####### 
-source("config.R")
+source("config.R")  
+
+##### Setting the Rtool path #####
+Sys.setenv("R_ZIPCMD" = "C:/Rtools/bin/zip.exe") # Comment it before deploy
+
 
 ##### clearing env before launching APP  #############
 rm(list = ls())
@@ -8,9 +12,6 @@ rm(list = ls())
 options(shiny.maxRequestSize = 50*1024^2, # setting maximum upload size to 50MB if required.
         scipen = 999 # disable scientific notation
         )
-
-##### Setting the Rtool path #####
-Sys.setenv("R_ZIPCMD" = "C:/Rtools/bin/zip.exe")
 
 ##### loading required libraries  #############
 library(readxl)
