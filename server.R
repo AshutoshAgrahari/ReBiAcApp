@@ -110,9 +110,40 @@ function(input, output, session){
   # Updating the table
   observeEvent(input$updateUserAccessTable,{
     userLoginTable <- hot_to_r(input$userLoginTable)
+    if(all(which(userLoginTable$RemoveFlag == TRUE) != 1)){
+      if(any(duplicated(userLoginTable$Username)) == FALSE & any(duplicated(userLoginTable$Email)) == FALSE){
+        showModal(fnUpdateLoginAccessModal())
+      }else{
+        RecValues$userLoginTable <- readxl::read_xlsx(path = userLoginTablePath)
+        RecValues$userLoginTable$UserID <- as.integer(RecValues$userLoginTable$UserID)
+        customAlert(message = "Duplicate Username is not allowed. Each email Id should have only one username.",alertType = "warning")
+      }
+    }else{
+      customAlert(message = "admin Login Access can't be removed from the table.",alertType = "warning")
+    }
+  })
+  
+  # Poping for user confirmation to modify the table
+  fnUpdateLoginAccessModal <- function() {
+    modalDialog(title = tags$b("Please provide confirmation to update the Login Access Table"),size = "m",easyClose = T,fade = T,
+                actionButton("bntUpdateLoginYesTable", "Yes",class = "button button1",style="float:center;"),
+                actionButton("bntUpdateLoginNoTable", "No",class = "button button1",style="float:center;"),
+                footer = NULL
+    )
+  }
+  
+  # user's confirmation to modify the table
+  observeEvent(input$bntUpdateLoginYesTable,{
+    userLoginTable <- hot_to_r(input$userLoginTable)
     RecValues$userLoginTable <- userLoginTable[userLoginTable$RemoveFlag == FALSE,]
     openxlsx::write.xlsx(RecValues$userLoginTable,userLoginTablePath)
+    removeModal()
     customAlert(message = "User Login Access Table is updated successfully..",alertType = "success")
+  })
+  
+  # user's confirmation not to modify the table
+  observeEvent(input$bntUpdateLoginNoTable,{
+    removeModal()
   })
   
   # Creating new user
@@ -123,24 +154,29 @@ function(input, output, session){
     
     if(# Condition for Username
       !grepl("\\s|\\p{P}|\\p{S}", user, perl = TRUE) & # space, punctuation nor special char.
-      nchar(user) >= 8L & # length should be greater than equal to 8 characters
-      # Condition for password
-      grepl("[a-z]", pass) & # Contain 1 or more lowercase letters
-      grepl("[A-Z]", pass) & # Contain 1 or more lowercase letters
-      grepl("\\d", pass) & # Contain 1 or more numbers
-      !grepl("\\s|\\p{P}|\\p{S}", pass, perl = TRUE) & # space, punctuation nor special char.
-      nchar(pass) >= 8L # length should be greater than equal to 8 characters
+        nchar(user) >= 8L & # length should be greater than equal to 8 characters
+        # Condition for password
+        grepl("[a-z]", pass) & # Contain 1 or more lowercase letters
+        grepl("[A-Z]", pass) & # Contain 1 or more lowercase letters
+        grepl("\\d", pass) & # Contain 1 or more numbers
+        !grepl("\\s|\\p{P}|\\p{S}", pass, perl = TRUE) & # space, punctuation nor special char.
+        nchar(pass) >= 8L # length should be greater than equal to 8 characters
     ){
       userLoginTable <- RecValues$userLoginTable
-      tmpUserDetail <- data.frame(max(userLoginTable$UserID)+1,input$newUserName,input$newUserPassword,input$newUserEmailID, matrix(rep(TRUE, length(userLoginTable)-5),nrow = 1), FALSE)
-      names(tmpUserDetail) <- names(userLoginTable)
-      RecValues$userLoginTable <- rbind(userLoginTable,tmpUserDetail)
-      RecValues$userLoginTable$UserID <- as.integer(RecValues$userLoginTable$UserID)
-      openxlsx::write.xlsx(RecValues$userLoginTable,userLoginTablePath)
-      customAlert(message = "New User added successfully.",alertType = "success")
+      if(any(userLoginTable$Username %in% input$newUserName) == FALSE & any(userLoginTable$Email %in% input$newUserEmailID) == FALSE){
+        tmpUserDetail <- data.frame(max(userLoginTable$UserID)+1,input$newUserName,input$newUserPassword,input$newUserEmailID, matrix(rep(TRUE, length(userLoginTable)-5),nrow = 1), FALSE)
+        names(tmpUserDetail) <- names(userLoginTable)
+        RecValues$userLoginTable <- rbind(userLoginTable,tmpUserDetail)
+        RecValues$userLoginTable$UserID <- as.integer(RecValues$userLoginTable$UserID)
+        openxlsx::write.xlsx(RecValues$userLoginTable,userLoginTablePath)
+        customAlert(message = "New User added successfully.",alertType = "success")
+      }else{
+        customAlert(message = "Username or Email id is already registered.",alertType = "warning")
+      }
     }else{
       customAlert(message = "Username or Password is not satisfied with standand.",alertType = "error")
     }
   })
   
 }
+

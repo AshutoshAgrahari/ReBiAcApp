@@ -12,7 +12,7 @@ library(V8)               # Used to run custom java script code.
 source("shinyThemeUtils.R")
 
 # Shiny Dashboard code.
-shinydashboard::dashboardPage(title = "ReBiAcApp",
+shinydashboard::dashboardPage(title = "Retailify App",
   shinydashboard::dashboardHeader(
     title = logo_ReBiAcApp,
     tags$li(class = "dropdown",tags$h4(textOutput("loggedDetail")),style = "padding-top:10px; padding-bottom:1px;"),
