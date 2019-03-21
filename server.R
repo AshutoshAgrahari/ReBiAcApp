@@ -178,5 +178,29 @@ function(input, output, session){
     }
   })
   
+  
+  
+  #### Invoicing Module #####
+  # Display Invoicing Screen UI
+  # output$invoiceUI <- renderUI({
+  #   tagList(
+  #     AGBox(title="New User Registration:", width=12,
+  #           splitLayout(
+  #             textInput("newUserEmailID","Email ID:",value = "demo@test.com"),
+  #             textInput("newUserName","UserName:",value = "test"),
+  #             textInput("newUserPassword","Password:",value = "test@123")
+  #           ),
+  #           actionButton("createNewUserLogin", "Create New User", class="button button1"),
+  #           bsTooltip("createNewUserLogin", "Click to create new user account, access can be update in user access table.","right", options = list(container = "body")),
+  #           bsTooltip("newUserName", "Minimum 8 characters without any special symbol","right", options = list(container = "body")),
+  #           bsTooltip("newUserPassword", "Minimum 8 characters, minimum 1 Uppercase & minimum 1 lowercase without any special symbol","right", options = list(container = "body"))
+  #     ),
+  #     AGBox(title="User Login Access Grid", width=12,
+  #           rhandsontable::rHandsontableOutput('userLoginTable',width = "100%"),br(),
+  #           actionButton("updateUserAccessTable", "Update", class="button button1"),
+  #           bsTooltip("updateUserAccessTable", "Click to update the User detail and Access.","right", options = list(container = "body"))
+  #     )
+  #   )
+  # })
 }
 

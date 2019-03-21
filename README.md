@@ -3,8 +3,11 @@ Retail Billing and Accounting Application Developed using R Shiny
 
 
 # Hosted on shinyApps.io 
-# Click on below link to acces
+## Click on below link to acces
 https://alexnimbush.shinyapps.io/rebiacapp/
+
+# Login Detail
+## Username: admin | Password: admin
 
 
 # Configuration:

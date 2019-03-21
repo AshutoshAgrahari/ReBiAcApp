@@ -5,6 +5,6 @@ account: alexnimbush
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 798978
-bundleId: 1949917
+bundleId: 1955236
 url: https://alexnimbush.shinyapps.io/rebiacapp/
-when: 1552990333.26426
+when: 1553172439.05279
